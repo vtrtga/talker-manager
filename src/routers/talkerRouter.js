@@ -4,8 +4,9 @@ const fs = require('fs').promises;
 const path = 'src/talker.json';
 
 const router = express.Router();
+const readApi = require('../readApi');
 
-router.get('/', async (_req, res) => { 
+router.get('/talker', async (_req, res) => { 
     try {
       const content = await fs.readFile(path, 'utf8');
       const result = JSON.parse(content);
@@ -14,5 +15,17 @@ router.get('/', async (_req, res) => {
       console.log('Não foi possivel ler');
     }
   });
+
+router.get('/talker/:id', async (req, res) => {
+    const { id } = req.params;
+    const talkers = await readApi();
+    const talkerById = talkers.filter((t) => t.id === Number(id));
+    if (talkerById.length <= 0) {
+        return res.status(404).json({
+            message: 'Pessoa palestrante não encontrada',
+        });
+        }
+        return res.status(200).json(talkerById[0]);
+});
 
 module.exports = router;

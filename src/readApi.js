@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 
 const readApi = async () => {
-    const path = '/files/talker.json';
+    const path = 'src/talker.json';
     try {
         const contentFile = await fs.readFile(path, 'utf8');
 
