@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs').promises;
+const generateToken = require('../../utils/generateToken');
 
 const path = 'src/talker.json';
 
@@ -26,6 +27,16 @@ router.get('/talker/:id', async (req, res) => {
         });
         }
         return res.status(200).json(talkerById[0]);
+});
+
+router.post('/login', (_req, res) => {
+    const token = generateToken();
+
+    return res.status(200).json({
+        email: 'email@email.com',
+        password: '123456',
+        token,
+    });
 });
 
 module.exports = router;
