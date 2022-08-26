@@ -2,6 +2,14 @@ const express = require('express');
 const fs = require('fs').promises;
 const generateToken = require('../../utils/generateToken');
 const loginValidation = require('../../middlewares/loginValidation');
+const {
+    // emailAndPasswordValidation,
+    nameValidation,
+    ageValidation,
+    watchedAtValidation,
+    rateValidation,
+    talkValidation,
+} = require('../../middlewares/signupValidation');
 
 const path = 'src/talker.json';
 
@@ -38,6 +46,29 @@ router.post('/login', loginValidation, (_req, res) => {
         password: '123456',
         token,
     });
+});
+
+router.post('/talker', 
+nameValidation,
+ageValidation,
+watchedAtValidation,
+rateValidation,
+talkValidation,
+async (req, res) => {
+    const talkers = await readApi();
+
+    const { name, age, talk } = req.body;
+    // const { watchedAt, rate } = talk;
+    const { authorization } = req.header;
+    if (authorization === undefined) {
+        return res.status(401).json({
+            message: 'Token não encontrado',
+        });
+    }
+    const newTalkers = [...talkers, {
+        name, age, talk,
+    }];
+    return res.status(201).json(newTalkers);
 });
 
 module.exports = router;
