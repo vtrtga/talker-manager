@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs').promises;
 const generateToken = require('../../utils/generateToken');
+const loginValidation = require('../../middlewares/loginValidation');
 
 const path = 'src/talker.json';
 
@@ -29,7 +30,7 @@ router.get('/talker/:id', async (req, res) => {
         return res.status(200).json(talkerById[0]);
 });
 
-router.post('/login', (_req, res) => {
+router.post('/login', loginValidation, (_req, res) => {
     const token = generateToken();
 
     return res.status(200).json({
