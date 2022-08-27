@@ -9,6 +9,7 @@ const {
     watchedAtValidation,
     rateValidation,
     talkValidation,
+    tokenValidation,
 } = require('../../middlewares/signupValidation');
 
 const path = 'src/talker.json';
@@ -48,27 +49,18 @@ router.post('/login', loginValidation, (_req, res) => {
     });
 });
 
-router.post('/talker', 
-nameValidation,
-ageValidation,
-watchedAtValidation,
-rateValidation,
-talkValidation,
-async (req, res) => {
-    const talkers = await readApi();
-
-    const { name, age, talk } = req.body;
-    // const { watchedAt, rate } = talk;
-    const { authorization } = req.header;
-    if (authorization === undefined) {
-        return res.status(401).json({
-            message: 'Token não encontrado',
-        });
-    }
-    const newTalkers = [...talkers, {
-        name, age, talk,
-    }];
-    return res.status(201).json(newTalkers);
-});
+// router.post('/talker', 
+// tokenValidation,
+// nameValidation,
+// ageValidation,
+// talkValidation,
+// watchedAtValidation,
+// rateValidation,
+// async (req, res) => {
+//     const talkers = await readApi();
+//     const { name, age, talk } = req.body;
+//     const newTalkers = [...talkers];
+//     return res.status(201).json(newTalkers);
+// });
 
 module.exports = router;
