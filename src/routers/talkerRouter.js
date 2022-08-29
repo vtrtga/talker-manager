@@ -2,6 +2,8 @@ const express = require('express');
 const fs = require('fs').promises;
 const generateToken = require('../../utils/generateToken');
 const loginValidation = require('../../middlewares/loginValidation');
+
+const { writeFile, readFile } = fs;
 const {
     // emailAndPasswordValidation,
     nameValidation,
@@ -49,18 +51,28 @@ router.post('/login', loginValidation, (_req, res) => {
     });
 });
 
-// router.post('/talker', 
-// tokenValidation,
-// nameValidation,
-// ageValidation,
-// talkValidation,
-// watchedAtValidation,
-// rateValidation,
-// async (req, res) => {
-//     const talkers = await readApi();
-//     const { name, age, talk } = req.body;
-//     const newTalkers = [...talkers];
-//     return res.status(201).json(newTalkers);
-// });
+router.post('/talker', 
+tokenValidation,
+nameValidation,
+ageValidation,
+talkValidation,
+watchedAtValidation,
+rateValidation,
+ async (req, res) => {
+   const talker = req.body;
+   try {
+     const oldTalkers = await readFile(path, 'utf8');
+     const parseOldTalkers = JSON.parse(oldTalkers);
+     const id = parseOldTalkers.length + 1;
+     const newTalkers = [...parseOldTalkers, { id, ...talker }];
+    const write = await writeFile(path, JSON.stringify(newTalkers));
+    console.log(typeof write);
+    return res.status(201).json({ id, ...talker });
+   } catch (err) {
+      res.status(400).json({
+        message: err.message,
+      });
+     }
+});
 
 module.exports = router;
