@@ -14,5 +14,18 @@ const updateTalkers = async (id, update) => {
     return { id, ...update };
 };
 
+const deleteTalkers = async (id) => {
+    const talkers = await readFile();
+    
+    const exactTalker = talkers.find((t) => t.id === Number(id));
+
+    if (exactTalker) {
+        const updatedTalker = talkers.filter((t) => t.id !== Number(id));
+        await writeFile(path, JSON.stringify(updatedTalker));
+    }
+    return null;
+};
+
 module.exports = { 
-updateTalkers };
+updateTalkers,
+deleteTalkers };

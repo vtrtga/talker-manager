@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs').promises;
 const generateToken = require('../../utils/generateToken');
 const loginValidation = require('../../middlewares/loginValidation');
-const { updateTalkers } = require('../../utils/helpers');
+const { updateTalkers, deleteTalkers } = require('../../utils/helpers');
 
 const { writeFile, readFile } = fs;
 const {
@@ -19,6 +19,13 @@ const path = 'src/talker.json';
 
 const router = express.Router();
 const readApi = require('../readApi');
+
+router.delete('/talker/:id', tokenValidation, (req, res) => {
+  const { id } = req.params;
+  const callDelete = deleteTalkers(id);
+  console.log(callDelete);
+  return res.status(204).json();
+});
 
 router.get('/talker', async (_req, res) => { 
     try {
