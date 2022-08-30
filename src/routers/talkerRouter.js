@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs').promises;
 const generateToken = require('../../utils/generateToken');
 const loginValidation = require('../../middlewares/loginValidation');
+const { updateTalkers } = require('../../utils/helpers');
 
 const { writeFile, readFile } = fs;
 const {
@@ -73,6 +74,21 @@ rateValidation,
         message: err.message,
       });
      }
+});
+
+router.put('/talker/:id', 
+tokenValidation,
+nameValidation,
+ageValidation,
+talkValidation,
+watchedAtValidation,
+rateValidation,
+ async (req, res) => {
+  const { id } = req.params;
+  const b = req.body;
+  const update = await updateTalkers(Number(id), b);
+  console.log(update);
+  return res.status(200).json(update);
 });
 
 module.exports = router;
