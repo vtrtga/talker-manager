@@ -9,9 +9,9 @@ const updateTalkers = async (id, update) => {
     if (talkerToUpdate) {
         const withoutTalker = talkers.filter((t) => t.id !== (id)); 
         const updatedTalkers = [...withoutTalker, { id, ...update }];
-        writeFile(path, JSON.stringify(updatedTalkers));
+        await writeFile(path, JSON.stringify(updatedTalkers));
     }
-    return { id: Number(id), ...update };
+    return { id, ...update };
 };
 
 module.exports = { 
