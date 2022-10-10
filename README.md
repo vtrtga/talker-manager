@@ -1,4 +1,4 @@
-Projeto Talker Menager 
+Projeto Talker Manager 
 
 Projeto que desenvolvi como estudante da Trybe de um CRUD de uma agencia de palestrantes.
 o projeto foi desenvolvido utilizando as seguintes tecnologias:
