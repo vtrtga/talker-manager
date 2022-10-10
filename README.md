@@ -5,4 +5,4 @@ o projeto foi desenvolvido utiliazndo as seguintes tecnologias:
 - Javascript
 - NodeJS
 - MySQL
-- JSON
+- Docker
